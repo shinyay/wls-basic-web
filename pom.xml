@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.oracle.jp.shinyay</groupId>
+    <artifactId>wls-basic-web</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>basicWebapp</name>
+
+    <!-- Start elements of Oracle products and licenses -->
+    <description>Oracle WebLogic Maven Archetype</description>
+    <url>http://www.oracle.com/us/products/middleware/cloud-app-foundation/weblogic/suite/overview/index.html</url>
+    <inceptionYear>1997</inceptionYear>
+
+    <organization>
+        <name>Oracle America, Inc.</name>
+        <url>http://www.oracle.com</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>
+                The "Oracle Technology Network License Agreement - Oracle
+                Maven Repository" is the license for this Project Object
+                Model (POM) file and the associated software and documentation
+                unless you have accepted or agreed to different license terms
+                with Oracle when you obtained the right to use the POM file,
+                software and documentation. Please refer to the comments below
+                for additional information.
+            </name>
+            <url>https://www.oracle.com/webapps/maven/register/license.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <!-- End elements of Oracle products and licenses -->
+
+    <parent>
+        <groupId>com.oracle.weblogic.archetype</groupId>
+        <artifactId>wls-common</artifactId>
+        <version>12.2.1-2-0</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>basicWebapp</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.oracle.weblogic</groupId>
+                <artifactId>weblogic-maven-plugin</artifactId>
+                <version>12.2.1-2-0</version>
+                <configuration>
+                    <middlewareHome>D:\AppData\Oracle\wls12212</middlewareHome>
+                    <domainHome>D:\AppData\Oracle\wls12212\user_projects\domains\base_domain</domainHome>
+                    <adminurl>t3://127.0.0.1:7001</adminurl>
+                    <user>weblogic</user>
+                    <password>Welcome1#</password>
+                </configuration>
+                <executions>
+                    <!--Deploy the application to the server-->
+                    <execution>
+                        <id>wls-deploy</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                        <configuration>
+                            <adminurl>t3://127.0.0.1:7001</adminurl>
+                            <user>weblogic</user>
+                            <password>Welcome1#</password>
+                            <source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+                            <targets>AdminServer</targets>
+                            <verbose>true</verbose>
+                            <name>${project.build.finalName}</name>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>wls-undeploy</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>undeploy</goal>
+                        </goals>
+                        <configuration>
+                            <adminurl>t3://127.0.0.1:7001</adminurl>
+                            <user>weblogic</user>
+                            <password>Welcome1#</password>
+                            <targets>AdminServer</targets>
+                            <verbose>true</verbose>
+                            <name>${project.build.finalName}</name>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
